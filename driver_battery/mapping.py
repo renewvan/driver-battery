@@ -1,4 +1,4 @@
-"""Pure mapping: Victron Venus OS MQTT payloads -> `van/battery/<id>/*`
+"""Pure mapping: Victron Venus OS MQTT payloads -> `renewvan/battery/<id>/*`
 publishes. No network, no MQTT client — this is the seam the ticket's
 acceptance criteria unit-test against fixture Victron payloads.
 
@@ -53,7 +53,7 @@ CHARGE_STATE_CODES: dict[int, str] = {
 
 
 def battery_topic(entity_id: str, prop: str) -> str:
-    return f"van/battery/{entity_id}/{prop}"
+    return f"renewvan/battery/{entity_id}/{prop}"
 
 
 def map_batteries(

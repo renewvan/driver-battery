@@ -1,4 +1,4 @@
-"""Persistent MQTT connection to the van bus with LWT and a retained-topic
+"""Persistent MQTT connection to the renewvan bus with LWT and a retained-topic
 publish helper. Same shape as driver-tank's publisher.py.
 """
 from __future__ import annotations
@@ -12,7 +12,7 @@ from driver_battery.config import MqttConfig
 
 logger = logging.getLogger(__name__)
 
-HEALTH_TOPIC = "van/battery/driver/status"
+HEALTH_TOPIC = "renewvan/battery/health"
 
 
 class Publisher:
@@ -27,10 +27,10 @@ class Publisher:
 
     def _on_connect(self, client, userdata, flags, rc):  # noqa: ANN001
         if rc == 0:
-            logger.info("Connected to van-bus MQTT broker %s:%s", self._config.host, self._config.port)
+            logger.info("Connected to renewvan-bus MQTT broker %s:%s", self._config.host, self._config.port)
             client.publish(HEALTH_TOPIC, payload="online", qos=1, retain=True)
         else:
-            logger.error("Van-bus MQTT connect failed with rc=%s", rc)
+            logger.error("Renewvan-bus MQTT connect failed with rc=%s", rc)
 
     def connect(self) -> None:
         self._client.connect(self._config.host, self._config.port)

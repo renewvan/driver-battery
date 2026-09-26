@@ -1,1 +1,1 @@
-"""driver-battery: Victron Venus OS MQTT -> van-bus battery remap."""
+"""driver-battery: Victron Venus OS MQTT -> renewvan-bus battery remap."""

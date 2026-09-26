@@ -5,7 +5,7 @@ bus (publish) and the Victron GX device's own broker (subscribe).
 
 `INSTANCE_TO_ID` is the static `instance -> id` map from
 `.scratch/renewvan-hub-v0/issues/04-battery-soc-topic-mapping.md`: `id`
-(the `van/battery/<id>/...` path segment) is deliberately not derived
+(the `renewvan/battery/<id>/...` path segment) is deliberately not derived
 from Victron's `name` field. v0 ships exactly the one bank this house has.
 """
 from __future__ import annotations

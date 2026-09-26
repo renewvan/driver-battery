@@ -1,8 +1,8 @@
 # driver-battery
 
-Victron Venus OS MQTT → van-bus battery remap. Bridges the house
+Victron Venus OS MQTT → renewvan-bus battery remap. Bridges the house
 battery bank's existing native-MQTT feed (Venus OS's `dbus-mqtt`
-service on the GX device) onto the shared `van/battery/<id>/*` schema —
+service on the GX device) onto the shared `renewvan/battery/<id>/*` schema —
 no new sensing, just a topic remap, same shape as `driver-tank` but for
 an existing feed. Per
 `hub/.scratch/renewvan-hub-v0-build/issues/04-victron-battery-bridge.md`
@@ -15,7 +15,10 @@ and the topic-mapping decision in
   and `N/{portalId}/system/0/SystemState/State`. Both stay subscribed
   continuously — Venus OS stops publishing a path once its last
   subscriber disconnects.
-- **Van bus** (publish only, retained): `van/battery/<id>/*`.
+- **Renewvan bus** (publish only, retained): `renewvan/battery/<id>/*`, plus
+  driver liveness on `renewvan/battery/health` (`online`/`offline` via MQTT
+  LWT) — deliberately 3 segments, not 4, so it can't be mistaken for a
+  `battery` entity keyed by a fake `health`/`driver` id.
 
 ## Mapping
 
@@ -25,11 +28,11 @@ field. v0 ships one entry: `0 -> "house"`.
 
 | Victron `Batteries[]` field | → topic | |
 |---|---|---|
-| `soc` | `van/battery/<id>/soc_pct` | direct copy |
-| `voltage` | `van/battery/<id>/voltage_v` | direct copy |
-| `current` | `van/battery/<id>/current_a` | direct copy, signed |
-| `power` | `van/battery/<id>/power_w` | direct copy, signed |
-| `temperature` | `van/battery/<id>/temperature_c` | direct copy |
+| `soc` | `renewvan/battery/<id>/soc_pct` | direct copy |
+| `voltage` | `renewvan/battery/<id>/voltage_v` | direct copy |
+| `current` | `renewvan/battery/<id>/current_a` | direct copy, signed |
+| `power` | `renewvan/battery/<id>/power_w` | direct copy, signed |
+| `temperature` | `renewvan/battery/<id>/temperature_c` | direct copy |
 
 `Batteries[].state`/`.bmsstate` are never read — coarse per-battery
 Idle/Charging/Discharging and a raw BMS passthrough, neither carries
@@ -47,12 +50,12 @@ against fixture Victron payloads, no live broker or GX device required.
 
 ## Configuration
 
-Environment variables (matches `hub`'s `docker-compose.yml` `battery:`
+Environment variables (matches `hub`'s `docker-compose.yml` `driver-battery:`
 service block):
 
 | Variable | Default | Notes |
 |---|---|---|
-| `MQTT_HOST` | `mosquitto` | Van bus broker |
+| `MQTT_HOST` | `mosquitto` | Renewvan bus broker |
 | `MQTT_PORT` | `1883` | |
 | `MQTT_USERNAME` | _(none)_ | |
 | `MQTT_PASSWORD` | _(none)_ | |

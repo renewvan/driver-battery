@@ -1,5 +1,5 @@
 """Persistent MQTT subscription against the Victron Venus OS GX device's
-own broker — separate connection from the van-bus Publisher. Per
+own broker — separate connection from the renewvan-bus Publisher. Per
 research ticket 05: Venus OS stops publishing a path once its last
 subscriber disconnects, so both topics below must stay subscribed
 continuously, never connect/read/disconnect.
