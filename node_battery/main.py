@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""driver-battery entrypoint."""
+"""node-battery entrypoint."""
 from __future__ import annotations
 
 import argparse
 import logging
 
-from driver_battery.config import load_config
-from driver_battery.publisher import Publisher
-from driver_battery.subscriber import Subscriber
+from node_battery.config import load_config
+from node_battery.publisher import Publisher
+from node_battery.subscriber import Subscriber
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="driver-battery: Victron Venus OS MQTT -> renewvan-bus battery remap"
+        description="node-battery: Victron Venus OS MQTT -> renewvan-bus battery remap"
     )
     parser.add_argument("-d", "--debug", action="store_true", help="Enable debug logging")
     args = parser.parse_args()

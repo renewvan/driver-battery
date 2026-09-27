@@ -1,9 +1,9 @@
-# driver-battery
+# node-battery
 
 Victron Venus OS MQTT → renewvan-bus battery remap. Bridges the house
 battery bank's existing native-MQTT feed (Venus OS's `dbus-mqtt`
 service on the GX device) onto the shared `renewvan/battery/<id>/*` schema —
-no new sensing, just a topic remap, same shape as `driver-tank` but for
+no new sensing, just a topic remap, same shape as `node-tank` but for
 an existing feed. Per
 `hub/.scratch/renewvan-hub-v0-build/issues/04-victron-battery-bridge.md`
 and the topic-mapping decision in
@@ -16,15 +16,14 @@ and the topic-mapping decision in
   continuously — Venus OS stops publishing a path once its last
   subscriber disconnects.
 - **Renewvan bus** (publish only, retained): `renewvan/battery/<id>/*`, plus
-  driver liveness on `renewvan/battery/health` (`online`/`offline` via MQTT
+  node liveness on `renewvan/battery/health` (`online`/`offline` via MQTT
   LWT) — deliberately 3 segments, not 4, so it can't be mistaken for a
-  `battery` entity keyed by a fake `health`/`driver` id.
+  `battery` entity keyed by a fake `health`/`node` id.
 
 ## Mapping
 
 `id` is looked up via a static `instance -> id` map
-(`driver_battery/config.py:INSTANCE_TO_ID`), never from Victron's `name`
-field. v0 ships one entry: `0 -> "house"`.
+(`node_battery/config.py:INSTANCE_TO_ID`), never from Victron's `name`
 
 | Victron `Batteries[]` field | → topic | |
 |---|---|---|
@@ -41,16 +40,16 @@ charge-phase info.
 `charge_state` comes from the separate `SystemState/State` topic (a
 single system-wide value, not per-bank) and is fanned out to every `id`
 in the static map. Full code → `charge_state` table in
-`driver_battery/mapping.py:CHARGE_STATE_CODES`; any code not in the
+`node_battery/mapping.py:CHARGE_STATE_CODES`; any code not in the
 table maps to `unknown`.
 
-The mapping is a pure function (`driver_battery/mapping.py`, no
+The mapping is a pure function (`node_battery/mapping.py`, no
 network/MQTT client) — this is what `tests/test_mapping.py` exercises
 against fixture Victron payloads, no live broker or GX device required.
 
 ## Configuration
 
-Environment variables (matches `hub`'s `docker-compose.yml` `driver-battery:`
+Environment variables (matches `hub`'s `docker-compose.yml` `node-battery:`
 service block):
 
 | Variable | Default | Notes |
@@ -67,7 +66,7 @@ service block):
 
 ```bash
 pip install -r requirements.txt
-VICTRON_MQTT_HOST=192.168.1.50 VICTRON_PORTAL_ID=abc123 python -m driver_battery.main
+VICTRON_MQTT_HOST=192.168.1.50 VICTRON_PORTAL_ID=abc123 python -m node_battery.main
 ```
 
 ## Testing
@@ -83,6 +82,6 @@ or GX device required.
 ## Releasing
 
 Tagging a GitHub release builds and publishes
-`ghcr.io/<owner>/driver-battery:<tag>`, which `hub`'s deployment compose
+`ghcr.io/<owner>/node-battery:<tag>`, which `hub`'s deployment compose
 file pins by tag (never builds from source — see
 `hub/docs/adr/0001-compose-services-via-pinned-images-not-git-submodules.md`).

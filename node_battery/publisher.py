@@ -1,5 +1,5 @@
 """Persistent MQTT connection to the renewvan bus with LWT and a retained-topic
-publish helper. Same shape as driver-tank's publisher.py.
+publish helper. Same shape as node-tank's publisher.py.
 """
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import logging
 
 import paho.mqtt.client as mqtt
 
-from driver_battery.config import MqttConfig
+from node_battery.config import MqttConfig
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +18,7 @@ HEALTH_TOPIC = "renewvan/battery/health"
 class Publisher:
     def __init__(self, config: MqttConfig) -> None:
         self._config = config
-        self._client = mqtt.Client(client_id="driver-battery", clean_session=False)
+        self._client = mqtt.Client(client_id="node-battery", clean_session=False)
         if config.username:
             self._client.username_pw_set(config.username, config.password)
         self._client.will_set(HEALTH_TOPIC, payload="offline", qos=1, retain=True)

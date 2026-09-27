@@ -1,7 +1,7 @@
 """Fixture-payload tests for the Victron -> `renewvan/battery/<id>/*` mapping
 — no live broker or GX device required.
 """
-from driver_battery.mapping import map_batteries, map_charge_state
+from node_battery.mapping import map_batteries, map_charge_state
 from tests.fixtures import victron as fx
 
 INSTANCE_TO_ID = {0: "house"}

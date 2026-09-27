@@ -5,6 +5,6 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY driver_battery/ driver_battery/
+COPY node_battery/ node_battery/
 
-ENTRYPOINT ["python", "-m", "driver_battery.main"]
+ENTRYPOINT ["python", "-m", "node_battery.main"]

@@ -14,9 +14,9 @@ import logging
 
 import paho.mqtt.client as mqtt
 
-from driver_battery.config import AppConfig
-from driver_battery.mapping import map_batteries, map_charge_state
-from driver_battery.publisher import Publisher
+from node_battery.config import AppConfig
+from node_battery.mapping import map_batteries, map_charge_state
+from node_battery.publisher import Publisher
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +36,7 @@ class Subscriber:
         self._batteries_topic = _batteries_topic(config.victron.portal_id)
         self._system_state_topic = _system_state_topic(config.victron.portal_id)
 
-        self._client = mqtt.Client(client_id="driver-battery-victron", clean_session=False)
+        self._client = mqtt.Client(client_id="node-battery-victron", clean_session=False)
         self._client.reconnect_delay_set(min_delay=1, max_delay=30)
         self._client.on_connect = self._on_connect
         self._client.on_message = self._on_message
