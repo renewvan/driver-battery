@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """node-battery entrypoint."""
+
 from __future__ import annotations
 
 import argparse

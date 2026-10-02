@@ -8,6 +8,7 @@ bus (publish) and the Victron GX device's own broker (subscribe).
 (the `renewvan/battery/<id>/...` path segment) is deliberately not derived
 from Victron's `name` field. v0 ships exactly the one bank this house has.
 """
+
 from __future__ import annotations
 
 import os

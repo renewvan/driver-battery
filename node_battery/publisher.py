@@ -1,6 +1,7 @@
 """Persistent MQTT connection to the renewvan bus with LWT and a retained-topic
 publish helper. Same shape as node-tank's publisher.py.
 """
+
 from __future__ import annotations
 
 import json
@@ -27,7 +28,9 @@ class Publisher:
 
     def _on_connect(self, client, userdata, flags, rc):  # noqa: ANN001
         if rc == 0:
-            logger.info("Connected to renewvan-bus MQTT broker %s:%s", self._config.host, self._config.port)
+            logger.info(
+                "Connected to renewvan-bus MQTT broker %s:%s", self._config.host, self._config.port
+            )
             client.publish(HEALTH_TOPIC, payload="online", qos=1, retain=True)
         else:
             logger.error("Renewvan-bus MQTT connect failed with rc=%s", rc)

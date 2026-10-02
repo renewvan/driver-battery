@@ -15,6 +15,7 @@ Two independent upstream topics, two independent mapping functions (see
   single system-wide charge-stage value, fanned out to every id in the
   map (Victron exposes charge stage per-system, not per-bank).
 """
+
 from __future__ import annotations
 
 # Victron `Batteries[]` field -> v0.1 battery entity property. Direct
@@ -56,9 +57,7 @@ def battery_topic(entity_id: str, prop: str) -> str:
     return f"renewvan/battery/{entity_id}/{prop}"
 
 
-def map_batteries(
-    payload: dict, instance_to_id: dict[int, str]
-) -> list[tuple[str, object]]:
+def map_batteries(payload: dict, instance_to_id: dict[int, str]) -> list[tuple[str, object]]:
     """Map a decoded `N/{portalId}/system/0/Batteries` payload
     (`{"value": [...]}`) to a list of `(topic, value)` pairs.
 
@@ -78,9 +77,7 @@ def map_batteries(
     return results
 
 
-def map_charge_state(
-    payload: dict, instance_to_id: dict[int, str]
-) -> list[tuple[str, object]]:
+def map_charge_state(payload: dict, instance_to_id: dict[int, str]) -> list[tuple[str, object]]:
     """Map a decoded `N/{portalId}/system/0/SystemState/State` payload
     (`{"value": <code>}`) to a `(topic, charge_state)` pair per id in
     `instance_to_id` — the single system-wide value fans out to every

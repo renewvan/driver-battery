@@ -7,6 +7,7 @@ continuously, never connect/read/disconnect.
 Thin I/O adapter around paho-mqtt; not unit-tested (see mapping.py for
 the tested seam).
 """
+
 from __future__ import annotations
 
 import json
@@ -44,7 +45,9 @@ class Subscriber:
     def _on_connect(self, client, userdata, flags, rc):  # noqa: ANN001
         if rc == 0:
             logger.info(
-                "Connected to Victron GX broker %s:%s", self._config.victron.host, self._config.victron.port
+                "Connected to Victron GX broker %s:%s",
+                self._config.victron.host,
+                self._config.victron.port,
             )
             # Persistent subscriptions — Venus OS stops publishing once
             # the last subscriber disconnects, so these must never drop.
